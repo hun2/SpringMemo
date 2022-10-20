@@ -148,7 +148,7 @@
 		
 		
 		// 2. ajax 를 통한 방법
-		//var url = $(this).attr('action');
+		var url = $(this).attr('action');
 		//var params =  $(this).serialize();      //name 속성에 있는 값들을 파라미터로 구성해준다. => 무조건 form 안에 있는것만 가능. 
 		//console.log(params)
 		

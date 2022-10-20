@@ -53,7 +53,7 @@ public class UserRestController {
 		String encryptPassword =  EncryptUtils.md5(password);
 		userBo.addUserId(loginId, encryptPassword, name, email);
 		
-		//db insert
+		//정상적으로 db insert가 되면 밑으로 내려감.
 		Map<String , Object> result = new HashMap<>();
 		result.put("code", 100);
 		result.put("result", "success");
