@@ -12,8 +12,11 @@
 	<!--로그인 정보  -->
 	
 	<div>
-		<span>김기훈님 안녕하세요.</span>
+		<!-- 로그인이 되었을때만 정보노출 -->
+		<c:if test="${not empty userName}">
+		<span>${userName}님 안녕하세요.</span>
 		<a href="/user/sign_out/" class="font-weight-bold ml-3">로그아웃</a>
+		</c:if>
 	</div>
 	
 	
