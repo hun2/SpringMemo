@@ -37,7 +37,7 @@
  	
  	<select id="selectLoginIdPassword" parameterType="map" resultType="com.example.Memo.model.User">
  		SELECT
- 			`id
+ 			`id`
 			,`loginId`
 			,`password`
 			,`name`

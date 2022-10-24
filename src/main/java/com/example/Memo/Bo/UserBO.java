@@ -19,7 +19,7 @@ public class UserBO {
 	
 	//회원가입
 	public void addUserId(String loginId, String password, String name, String email) {
-	
+		userDao.insertUserId(loginId, password, name, email);
 	}
 	
 	

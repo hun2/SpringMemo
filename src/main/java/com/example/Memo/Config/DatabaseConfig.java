@@ -1,4 +1,4 @@
-package com.example.Memo.DatabaseConfig;
+package com.example.Memo.Config;
 
 import javax.sql.DataSource;
 
