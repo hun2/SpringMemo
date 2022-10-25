@@ -87,7 +87,7 @@
 					   alert("저장되었습니다");
 					   location.href = "/post/post_list_view";
 				   } else {
-					   alert(data.errorMessage);
+					   alert(result.errorMessage);
 				   }
 			   }
 		   		, error : function(e) {
