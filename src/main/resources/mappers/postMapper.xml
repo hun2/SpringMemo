@@ -23,17 +23,16 @@
 			, NOW()
 		)
 	</insert>
-	<select id="selectPostList" resultType="int">
+	<select id="selectPost" resultType="com.example.Memo.post.Model.Post">
 		SELECT
 			`id`
-			`userId`
-			`subject`
-			`content
-			`imagePath
-			`createdAt
-			`updatedAt
+			,`userId`
+			,`subject`
+			,`content`
+			,`imagePath`
+			,`createdAt`
+			,`updatedAt`
 		FROM
 			post
-	
 	</select>
 </mapper>

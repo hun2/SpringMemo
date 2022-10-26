@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
 <div class="d-flex justify-content-center">
 	<div class="w-50">
 		<h1>글 목록</h1>
@@ -14,12 +13,15 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
+				<c:forEach items="${posts}" var="post">
+					<tr>
+						<td>${post.id}</td>
+						<td>${post.content}</td>
+						<td><fmt:formatDate value="${post.createdAt}" pattern="yyyy년 MM월 dd일"/></td>
+						<td><fmt:formatDate value="${post.updatedAt}" pattern="yyyy년 MM월 dd일"/></td>
+					</tr>
+					
+				</c:forEach>
 			</tbody>
 		</table>
 		
