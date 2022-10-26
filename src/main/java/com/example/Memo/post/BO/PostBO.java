@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Memo.common.FileManagerServices;
 import com.example.Memo.post.DAO.PostDAO;
+import com.example.Memo.post.Model.Post;
 
 @Service
 public class PostBO {
@@ -35,9 +36,9 @@ public class PostBO {
 	}
 	
 	// db select 
-	public List<String> getPostList() {
+	public List<Post> getPost(){
 		
-		return ;
+		return postDAO.selectPost();
 	}
 	
 }
