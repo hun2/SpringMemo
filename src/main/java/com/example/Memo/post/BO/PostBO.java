@@ -27,18 +27,22 @@ public class PostBO {
 			imagePath = fileMangagerServies.saveFile(userLoginId, file);
 			
 		}
-		
-		
-		
-		
 		//  db insert => dao 에 요청
 		return postDAO.insertPost(userId, subject, content, imagePath);
 	}
 	
 	// db select 
-	public List<Post> getPost(){
+	public List<Post> getPost(int userId){
 		
-		return postDAO.selectPost();
+		return postDAO.selectPost(userId);
+		
+	}
+	
+	
+	//게시글 상세페이지
+	public Post getPostByPostIdAndUserId(int postId, int userId) {
+		
+		return postDAO.selectPostByPostIdAndUserId(postId, userId);
 	}
 	
 }

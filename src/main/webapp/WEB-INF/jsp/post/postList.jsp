@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <div class="d-flex justify-content-center">
 	<div class="w-50">
 		<h1>글 목록</h1>
@@ -15,10 +18,10 @@
 			<tbody>
 				<c:forEach items="${posts}" var="post">
 					<tr>
-						<td>${post.id}</td>
-						<td>${post.content}</td>
-						<td><fmt:formatDate value="${post.createdAt}" pattern="yyyy년 MM월 dd일"/></td>
-						<td><fmt:formatDate value="${post.updatedAt}" pattern="yyyy년 MM월 dd일"/></td>
+						<td> ${post.id}</td>
+						<td><a href="/post/post_detail_view?postId=${post.id}">${post.content}</a></td>
+						<td><fmt:formatDate value="${post.createdAt}" pattern="yyyy년 MM월 dd일 a HH:mm:ss"/></td>
+						<td><fmt:formatDate value="${post.updatedAt}" pattern="yyyy년 MM월 dd일 a HH:mm:ss"/></td>
 					</tr>
 					
 				</c:forEach>

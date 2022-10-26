@@ -23,7 +23,7 @@
 			, NOW()
 		)
 	</insert>
-	<select id="selectPost" resultType="com.example.Memo.post.Model.Post">
+	<select id="selectPost" resultType="com.example.Memo.post.Model.Post" parameterType="int">
 		SELECT
 			`id`
 			,`userId`
@@ -34,5 +34,26 @@
 			,`updatedAt`
 		FROM
 			post
+		WHERE
+			userId = #{userId}
+		ORDER BY id DESC
+	</select>
+	
+	
+	<select id="selectPostByPostIdAndUserId" resultType="com.example.Memo.post.Model.Post" parameterType="map">
+		SELECT
+			`id`
+			,`userId`
+			,`subject`
+			,`content`
+			,`imagePath`
+			,`createdAt`
+			,`updatedAt`
+		FROM
+			post
+		WHERE
+			id = #{postId}
+		AND 
+			userId = #{userId}
 	</select>
 </mapper>

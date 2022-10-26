@@ -20,6 +20,7 @@ public class PostRestController {
 	@Autowired
 	private PostBO postBO;
 	
+	//글쓰기
 	@PostMapping("/post/create")
 	public Map<String, Object> create(
 			@RequestParam("subject") String subject,
@@ -44,8 +45,6 @@ public class PostRestController {
 		} else {
 			result.put("errorMessage", "메모 저장에 실패했습니다.");
 		}
-		
 		return result;		
-		
 	}
 }
