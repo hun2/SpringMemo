@@ -6,12 +6,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component // 일반적인 스프링 빈
 public class FileManagerServices {
 	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	//실제 이미지가 저장될 경로를 변수선언.
 	public static final String FILE_UPLOAD_PATH = "C:\\Users\\User\\Desktop\\sts\\workspace\\images/";   //마지막에 / 꼭 넣어줘야된다함~  넣어줘야 경로를 찾는다함.
@@ -49,6 +52,33 @@ public class FileManagerServices {
 		//성공 했다면 이미지 url path 를 리턴한다. (WebMvcConfig 에서 매핑한 이미지 path)
 		// http://localhost:8080/images/kihun_20221024/exmple.png
 		return "/images/" + directoryName + file.getOriginalFilename();
+		
+	}
+	
+	public void deleteFile(String imagePath) {
+		//imagePath : /images/kihun_20221024/exmple.png
+		
+		//imagePath 에서 /images/ 구문을 제거
+		Path path = Paths.get(FILE_UPLOAD_PATH + imagePath.replace("/images/", ""));
+		if (Files.exists(path)) {
+			try {
+				Files.delete(path); //이미지를 삭제. (파일)
+			} catch (IOException e) {
+				log.error("[이미지 삭제] 이미지 삭제 실패 imagePath : {}" , imagePath);
+			} 
+			
+		}
+		
+		
+		//폴더 제거
+		path = path.getParent();
+		if (Files.exists(path)) {
+			try {
+				Files.delete(path);
+			} catch (IOException e) {
+				log.error("[디렉토리 삭제] 디렉토리 삭제 실패 imagePath : {}" , imagePath);
+			}
+		}
 		
 	}
 	

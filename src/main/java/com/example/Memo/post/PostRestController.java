@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,4 +48,31 @@ public class PostRestController {
 		}
 		return result;		
 	}
+	
+	
+	@PutMapping("/post/update")
+	public Map<String, Object> update(
+			@RequestParam("postId") int postId,
+			@RequestParam("subject") String subject,
+			@RequestParam(value="content", required = false) String content,
+			@RequestParam(value="file", required = false) MultipartFile file,
+			HttpSession session
+			){
+		Map<String, Object> result = new HashMap<>();
+		
+		String userLoginId =  (String) session.getAttribute("userLoginId");
+		int userId = (int) session.getAttribute("userId");
+		
+		int count =  postBO.updatePost(postId, userId, userLoginId, subject, content, file);
+		if (count >0) {
+			result.put("code", 100);
+		} else {
+			result.put("code", 400);
+			result.put("errorMessage", "글 수정에 실패하였습니다.");
+		}
+		
+		return result;
+		
+	}
+	
 }

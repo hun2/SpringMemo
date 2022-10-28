@@ -16,7 +16,12 @@ public interface PostDAO {
 			@Param("subject") String subject, 
 			@Param("content") String content, 
 			@Param("imagePath") String imagePath);
-	
+	public int updatePost(
+			@Param("postId")int postId,
+			@Param("userId") int userId, 
+			@Param("subject") String subject, 
+			@Param("content") String content, 
+			@Param("imagePath") String imagePath);
 	
 	
 	public List<Post> selectPost(int userId);
@@ -25,4 +30,7 @@ public interface PostDAO {
 	public Post selectPostByPostIdAndUserId(
 			@Param("postId")int postId, 
 			@Param("userId") int userId);
+	
+	
+	public Post selectPostByPostId(int postId);
 }
