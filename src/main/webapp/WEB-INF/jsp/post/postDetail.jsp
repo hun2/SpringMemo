@@ -21,7 +21,7 @@
    				<input type ="file" id="file" accept=".jpg,.jpeg,.png,.gif" >
    			</div>
    			<div class="d-flex justify-content-between mt-3" >
-   				<button type="button" class="btn btn-dark" id="postDeleteBtn">삭제</button>
+   				<button type="button" class="btn btn-dark" id="postDeleteBtn" data-id="${post.id}">삭제</button>
    				<div class="d-flex justify-content-end">
    					<a href="/post/post_list_view" class="btn btn-info" >목록</a>
    					<button type="button" class="btn btn-secondary" id="postUpdateBtn" data-post-id="${post.id}">수정</button>
@@ -98,6 +98,37 @@
 		
 		
 	})
+	
+	
+	
+	//삭제버튼 클릭.
+	$('#postDeleteBtn').on('click', function(){
+		
+		
+		var postId =  $(this).data('id');
+		$.ajax({
+			type : "DELETE"
+			, url : "/post/delete"
+			, data : {"postId" : postId}
+			, success : function(result) {
+				if(result.code == 100) {
+					alert("삭제 완료 하였습니다.");
+					location.href = "/post/post_list_view";					
+				} else {
+					alert(result.errorMessage);
+				}
+				
+			}
+			,error : function(e) {
+				alert("관리자에게 문의하세요");
+			}
+		})
+	})
+	
+	
+	
+	
+	
 
 
 </script>

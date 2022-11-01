@@ -22,7 +22,10 @@ public class PostController {
 	
 	//로그인 후 글 리스트
 	@RequestMapping("/post/post_list_view")
-	public String postListView(HttpSession session, Model model) {
+	public String postListView(
+			@RequestParam(value = "prevId", required = false) Integer prevIdParam,
+			@RequestParam(value = "nextId", required = false) Integer nextIdParam,
+			HttpSession session, Model model) {
 		
 		//로그인이 풀려있으면 로그인 페이지로 리다이렉트
 		Integer userId =  (Integer) session.getAttribute("userId"); // 로그인이 풀려있으면 null이기때문에 Integer (int 는 안됨)
@@ -33,7 +36,29 @@ public class PostController {
 		
 		
 		//db select
-		List<Post> post =  postBo.getPost(userId);
+		List<Post> post =  postBo.getPost(userId, prevIdParam , nextIdParam);
+		
+		int prevId = 0;
+		int nextId = 0;
+		if(post.isEmpty() == false ) { //비어있을때 에러방지.
+			 prevId =  post.get(0).getId();
+			 nextId = post.get(post.size() -1).getId();
+			 
+			 // 마지막 페이지 (next 방향의 끝 ) 인가?
+			 //제일 작은 숫자(postId) 와 nextId가 같으면 마지막페이지이다.
+			if ( postBo.isLastPage(nextId, nextId)) {
+				nextId = 0;
+			};
+			 
+			 // 맨 앞 페이지(prev 방향의 끝 ) 인가?
+			 //제일 큰 숫자(postId) 와 prevId 가 같으면 첫페이지 이다.
+			 
+			if (postBo.isFirstPage(prevId, nextId)) {
+				prevId = 0;
+			}
+		}
+		model.addAttribute("prevId", prevId);      // 가져온 포스트 중 가장 앞쪽 id
+		model.addAttribute("nextId", nextId);      // 가져온 포스트 중 가장 뒷쪽 id
 		model.addAttribute("posts", post);
 		
 		

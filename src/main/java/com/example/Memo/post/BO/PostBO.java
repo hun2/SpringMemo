@@ -1,5 +1,6 @@
 package com.example.Memo.post.BO;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,6 +19,8 @@ public class PostBO {
 	//private Logger log = LoggerFactory.getLogger(PostBO.class);
 	private Logger log = LoggerFactory.getLogger(this.getClass()); //모든곳에서 이 줄만 복사하면 해당 클래스 적용됨.
 	
+	//페이징 limit 갯수 선언
+	private static final int POST_MAX_SIZE = 3;
 	
 	@Autowired
 	private PostDAO postDAO;
@@ -68,11 +71,59 @@ public class PostBO {
 	
 	
 	// db select 
-	public List<Post> getPost(int userId){
+	public List<Post> getPost(int userId, Integer prevId, Integer nextId){
 		
-		return postDAO.selectPost(userId);
 		
+		//페이징
+		//게시글 번호가 : 10 9 8 /       7 6 5  /          4 3 2  /       1 구성이라 예
+		//만약 432 페이지에 있을때,
+		// 1) 이전을 눌렀을 때 => 정방향으로 4보다 큰거 3개를 가지고 온 후 (5,6,7) =>   쿼리에서 asc (7,6,5) 를 다시 하면 된다.
+		// 2) 다음을 눌렀을때 => 5보다 작은거 들고오면 끝.
+		
+		//기준페이지
+		Integer standardId = null;
+		
+		//방향
+		String direction = null;
+		
+		if (prevId != null) {
+			//이전 클릭
+			standardId = prevId;
+			direction = "prev";
+			
+			List<Post> postList =  postDAO.selectPost(userId, standardId, direction, POST_MAX_SIZE);
+			Collections.reverse(postList);
+			
+			return postList;
+			
+		} else if ( nextId != null)  {
+			//다음클릭
+			standardId = nextId;      // 기준 아이디
+			direction = "next";       // 방향
+		}
+		
+		
+		//첫페이지 일때는 standardId 가 null, 다음일떄는 값이 있음.
+		return postDAO.selectPost(userId, standardId, direction, POST_MAX_SIZE);
 	}
+	
+	
+	//next 방향의 끝인가
+	public boolean isLastPage(int nextId, int userId) {
+		//nextId와 제일 작은 id가 같은가?
+		
+		int postId =  postDAO.selectPostIdByUserIdandSort(userId, "ASC");
+		
+		return postId == nextId; // 같으면 마지막 페이지
+	}
+	
+	public boolean isFirstPage(int prevId, int userId) {
+		
+		int postId = postDAO.selectPostIdByUserIdandSort(userId, "DESC");
+		
+		return postId == prevId;
+	}
+	
 	
 	
 	//게시글 상세페이지
@@ -85,5 +136,24 @@ public class PostBO {
 		return postDAO.selectPostByPostId(postId);
 	}
 	
+	
+	
+	
+	
+	//삭제
+	public int deletePostById(int id) {
+		
+		Post post = getPostByPostId(id);
+		if (post == null) {
+			log.warn("[delete post] 삭제할 게시글이 없습니다. postId :{}", id);
+			return 0;
+		}
+		
+		if (post.getImagePath() != null ) {
+			fileMangagerServies.deleteFile(post.getImagePath());
+		}
+		return postDAO.deletePostById(id);
+		
+	}
 	
 }

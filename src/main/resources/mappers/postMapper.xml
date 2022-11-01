@@ -23,7 +23,7 @@
 			, NOW()
 		)
 	</insert>
-	<select id="selectPost" resultType="com.example.Memo.post.Model.Post" parameterType="int">
+	<select id="selectPost" resultType="com.example.Memo.post.Model.Post" parameterType="map">
 		SELECT
 			`id`
 			,`userId`
@@ -36,7 +36,32 @@
 			post
 		WHERE
 			userId = #{userId}
-		ORDER BY id DESC
+		<if test="direction == null">
+			ORDER BY id DESC
+		</if>
+		<if test="direction == 'next'">
+			<![CDATA[
+			AND `id` < #{standardId}
+			]]>
+			ORDER BY id DESC
+		</if>
+		<if test="direction == 'prev'">
+			<![CDATA[
+			AND `id` > #{standardId}
+			]]>	
+			ORDER BY id ASC
+		</if>
+			limit ${limit}	
+	</select>
+	<select id="selectPostIdByUserIdandSort" parameterType="map" resultType="int">
+		SELECT
+			`id`
+		FROM
+			`post`
+		WHERE
+			`userId` = #{userId}
+		ORDER BY `id` ${sort}
+		LIMIT 1
 	</select>
 	
 	
@@ -84,4 +109,11 @@
 		WHERE
 			`id` = #{postId}
 	</update>
+	
+	<delete id="deletePostById" parameterType="int" >
+		DELETE FROM
+			`post`
+		WHERE
+			`id` = #{id}
+	</delete>
 </mapper>
